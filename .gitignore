@@ -25,3 +25,4 @@ cobertura.ser
 *.zip
 *.rar
 !src/main/resources/
+.env

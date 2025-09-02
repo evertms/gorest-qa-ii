@@ -13,7 +13,7 @@ public class DataGenerator {
      * Generates a random full name (first name + last name).
      * @return A randomly generated full name.
      */
-    public String generateRandomFullName() {
+    public static String generateRandomFullName() {
         String firstName = FIRST_NAMES[RANDOM.nextInt(FIRST_NAMES.length)];
         String lastName = LAST_NAMES[RANDOM.nextInt(LAST_NAMES.length)];
         return firstName + " " + lastName;
@@ -25,7 +25,7 @@ public class DataGenerator {
      * @param name The name to base the email on.
      * @return A randomly generated email address.
      */
-    public String generateRandomEmail(String name) {
+    public static String generateRandomEmail(String name) {
         String sanitizedName = name.toLowerCase().replaceAll("[^a-z0-9]", ""); // Remove non-alphanumeric chars
         String domain = DOMAINS[RANDOM.nextInt(DOMAINS.length)];
         int randomNumber = 1000 + RANDOM.nextInt(9000); // 4-digit random number

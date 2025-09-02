@@ -1,4 +1,6 @@
 function fn() {
+  var DotEnvReader = Java.type('utils.DotEnvReader');
+
   var env = karate.env; // get system property 'karate.env'
   karate.log('karate.env system property was:', env);
   if (!env) {
@@ -6,7 +8,8 @@ function fn() {
   }
   var config = {
     env: env,
-    myVarName: 'someValue'
+    baseUrl: DotEnvReader.get('BASE_URL'),
+    bearerToken: 'Bearer ' + DotEnvReader.get('BEARER_TOKEN')
   }
   if (env == 'dev') {
     // customize
