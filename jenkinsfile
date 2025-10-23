@@ -17,8 +17,26 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                echo 'Ejecutando pruebas Karate...'
-                bat 'mvn test'
+                // 1. Envolvemos los comandos 'bat' con el bloque 'withCredentials'
+                withCredentials([
+                    string(credentialsId: 'GOREST_BASE_URL', variable: 'ENV_BASE_URL'),
+                    string(credentialsId: 'GOREST_TOKEN', variable: 'ENV_BEARER_TOKEN')
+                ]) {
+                    
+                    // 2. Usamos un solo bloque 'bat' para todos los comandos de Windows
+                    bat """
+                        echo "--- Creando archivo .env desde credenciales de Jenkins ---"
+                        
+                        rem Escribimos las variables de entorno (inyectadas por Jenkins) al archivo
+                        echo BASE_URL=%ENV_BASE_URL% > .env
+                        echo BEARER_TOKEN=%ENV_BEARER_TOKEN% >> .env
+                        
+                        echo "--- .env creado. Ejecutando pruebas Karate... ---"
+                        
+                        rem Tu comando original (ahora encontrará el .env)
+                        mvn test
+                    """
+                }
             }
         }
 
