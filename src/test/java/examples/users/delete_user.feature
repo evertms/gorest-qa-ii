@@ -7,28 +7,22 @@ Feature: Delete an existing user using a dynamic ID
     * header Authorization = bearerToken
 
   Scenario: Create a user and then delete it
+    
     # STEP 1: CREATE A NEW USER (POST)
-    * def dataGenerator = Java.type('utils.DataGenerator')
-    * def randomName = dataGenerator.generateRandomFullName()
-    * def randomEmail = dataGenerator.generateRandomEmail(randomName)
-    * def createUserPayload = { "name": "#(randomName)", "gender": "male", "email": "#(randomEmail)", "status": "active" }
-
-    Given path 'users'
-    And request createUserPayload
-    When method post
-    Then status 201
-    * def userId = response.id
-    * print 'Created user with ID: ' + userId
+    # Llamamos al feature de creación para obtener un usuario nuevo
+    * def createdUser = call read('create_user.feature')
+    
+    # Extraemos el ID del usuario creado
+    * def userId = createdUser.userId
+    * print 'Called create_user.feature, got ID: ' + userId
 
     # STEP 2: DELETE THE USER
     Given path 'users/' + userId
     When method delete
     Then status 204
     And match response == ''
-    # Assert that the response body is empty
 
-    # STEP 3: VERIFY THE DELETION (optional but recommended)
-    # Attempt to get the same user to confirm they no longer exist
+    # STEP 3: VERIFY THE DELETION 
     Given path 'users/' + userId
     When method get
     Then status 404
