@@ -19,8 +19,8 @@ pipeline {
             steps {
                 // 1. Envolvemos los comandos 'bat' con el bloque 'withCredentials'
                 withCredentials([
-                    string(credentialsId: 'GOREST_BASE_URL', variable: 'ENV_BASE_URL'),
-                    string(credentialsId: 'GOREST_TOKEN', variable: 'ENV_BEARER_TOKEN')
+                    string(credentialsId: 'GOREST_URL', variable: 'ENV_BASE_URL'),
+                    string(credentialsId: 'GOREST_BEARER', variable: 'ENV_BEARER_TOKEN')
                 ]) {
                     
                     // 2. Usamos un solo bloque 'bat' para todos los comandos de Windows
