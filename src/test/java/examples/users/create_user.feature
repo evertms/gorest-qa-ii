@@ -21,6 +21,5 @@ Feature: Crear un usuario usando datos dinámicos de Java
     * def userId = response.id
     * print 'Created user ID: ' + userId
 
-    # Opcional: Verificar que los datos creados en el response son los mismos que generamos
     And match response.name == randomName
     And match response.email == randomEmail

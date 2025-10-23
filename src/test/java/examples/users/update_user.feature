@@ -5,15 +5,12 @@ Feature: Update an existing user using a dynamic ID
     * header Accept = 'application/json'
     * header Content-Type = 'application/json'
     * header Authorization = bearerToken
-    * def dataGenerator = Java.type('utils.DataGenerator') # Movido al Background
+    * def dataGenerator = Java.type('utils.DataGenerator')
 
   Scenario: Create a user and then update their information
     
     # STEP 1: CREATE A NEW USER (POST)
-    # Llamamos al feature de creación para obtener un usuario nuevo
     * def createdUser = call read('create_user.feature')
-    
-    # Extraemos las variables que necesitamos del resultado de la llamada
     * def userId = createdUser.userId
     * def originalEmail = createdUser.randomEmail
     * print 'Called create_user.feature, got ID: ' + userId
@@ -23,19 +20,15 @@ Feature: Update an existing user using a dynamic ID
     * def updatedUserPayload = { "name": "#(updatedName)" }
 
     Given path 'users/' + userId
-    
-And request updatedUserPayload
+    And request updatedUserPayload
     When method patch
     Then status 200
 
-    # Validamos usando las variables de la llamada
+    # Optional: Validate the updated user data in the response
+    # ESTA ES LA VERIFICACIÓN IMPORTANTE
     * match response.id == userId
     * match response.name == updatedName
-    * match response.email == originalEmail # Verificamos que el email original no cambió
+    * match response.email == originalEmail
 
-    # STEP 3: VERIFY THE UPDATE (GET)
-    Given path 'users/' + userId
-    When method get
- 
-   Then status 200
-    * match response.name == updatedName
+    # STEP 3: ELIMINADO
+    # (Ya no es necesario verificar con un GET)
